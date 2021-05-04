@@ -109,7 +109,7 @@ export default {
         .doc(todo.id)
         .update({ todo: todo.todo });
 
-      editState.value = false;      
+      editState.value = false;
     };
 
     const editTodo = () => {
@@ -118,18 +118,30 @@ export default {
     };
 
     const deleteTodo = (id) => {
-      const r = confirm("Are you sure to delete this todo permanently ? 🙄");
-      if (r == true) {
-        // todos.value = todos.value.filter(todo => todo.id != id)
-        db.collection("vue-animations-todos")
-          .doc(id)
-          .delete();
-      } else {
-        return;
-      }
+      // const r = confirm("Are you sure to delete this todo permanently ? 🙄");
+      // if (r == true) {
+      //   // todos.value = todos.value.filter(todo => todo.id != id)
+      //   db.collection("vue-animations-todos")
+      //     .doc(id)
+      //     .delete();
+      // } else {
+      //   return;
+      // }
+
+      db.collection("vue-animations-todos")
+        .doc(id)
+        .delete();
     };
 
-    return { todos, addTodo, editTodo, deleteTodo, newTodo, editState, saveEditedTodo };
+    return {
+      todos,
+      addTodo,
+      editTodo,
+      deleteTodo,
+      newTodo,
+      editState,
+      saveEditedTodo,
+    };
   },
 };
 </script>
