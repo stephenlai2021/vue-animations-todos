@@ -11,7 +11,7 @@
         <li v-for="todo in todos" :key="todo.id">
           <div v-if="editState">
             <form @submit.prevent="saveEditedTodo(todo)" class="form-edit">
-              <input type="text" v-model="todo.todo" class="todo-input" />
+              <input type="text" :autofocus="autofocus" v-model="todo.todo" class="todo-input" />
               <button class="icon-save">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import useFirestore from "../composables/useFirestore";
 import { db } from "../firebase/config";
 import { Spinner } from "./Spinner.vue";
@@ -85,6 +85,7 @@ export default {
   setup(props, { emit }) {
     const { todos, error, load } = useFirestore("vue-animations-todos");
     const editState = ref(false);
+    const autofocus = ref(true)
 
     load();
 
@@ -103,6 +104,10 @@ export default {
         emit("badValue");
       }
     };
+
+    watchEffect(() => {
+
+    })
 
     const saveEditedTodo = (todo) => {
       db.collection("vue-animations-todos")
@@ -141,12 +146,16 @@ export default {
       newTodo,
       editState,
       saveEditedTodo,
+      autofocus
     };
   },
 };
 </script>
 
 <style>
+:root {
+  --primary: #2c3e50;
+}
 .todos {
   max-width: 400px;
   margin: 20px auto;
@@ -159,6 +168,7 @@ input {
   border-radius: 10px;
   box-sizing: border-box;
   margin-bottom: 20px;
+  outline: none;
 }
 .todos ul {
   position: relative;
@@ -183,9 +193,11 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
 }
 .icon-group {
-  margin-left: auto;
+  display: flex;
+  align-items: center;
 }
 .icon-save,
 .icon-edit,
@@ -198,7 +210,7 @@ input {
   border: none;
   outline: none;
   background: none;
-  /* margin-left: 0; */
+  margin-right: 10px;
 }
 .form-edit {
   display: flex;
@@ -206,7 +218,12 @@ input {
 }
 .todo-input {
   margin: 0;
-  padding: 6px;
+  /* padding: 6px; */
+  padding: 0;
   width: 90%;
+  border: none;
+  font-size: 16px;
+  color: var(--primary);
+  border-radius: 0;
 }
 </style>
