@@ -26,5 +26,7 @@ export default {
 </script>
 
 <style>
-
+.home {
+  margin: 0 20px;
+}
 </style>

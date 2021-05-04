@@ -39,7 +39,7 @@
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                @click="editTodo(todo)"
+                @click="editTodo"
               >
                 <path
                   stroke-linecap="round"
@@ -84,7 +84,7 @@ export default {
   // we must put props in the argument even it is not applied
   setup(props, { emit }) {
     const { todos, error, load } = useFirestore("vue-animations-todos");
-    const editState = ref(true);
+    const editState = ref(false);
 
     load();
 
@@ -108,9 +108,11 @@ export default {
       db.collection("vue-animations-todos")
         .doc(todo.id)
         .update({ todo: todo.todo });
+
+      editState.value = false;      
     };
 
-    const editTodo = (id) => {
+    const editTodo = () => {
       // const selectedTodo =
       editState.value = true;
     };
@@ -127,7 +129,7 @@ export default {
       }
     };
 
-    return { todos, addTodo, deleteTodo, newTodo, editState, saveEditedTodo };
+    return { todos, addTodo, editTodo, deleteTodo, newTodo, editState, saveEditedTodo };
   },
 };
 </script>
@@ -168,6 +170,7 @@ input {
 .todo-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .icon-group {
   margin-left: auto;
